@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Все курсы Клуба 42</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background-color: #ffffff;
+      color: #111;
+      line-height: 1.6;
+      padding: 24px 20px;
+      font-size: 18px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 32px;
+      font-weight: 400;
+      font-size: 28px;
+      color: #000;
+    }
+
+    .toc {
+      width: 100%;
+    }
+
+    .section {
+      margin-bottom: 16px;
+      border-bottom: 1px solid #ccc;
+    }
+    
+.section:last-child {
+      border-bottom: none;
+    }
+
+
+
+    .section-header,
+    .topic-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      cursor: pointer;
+      font-weight: 500;
+      color: #000;
+    }
+    
+     .topic-item-2 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      
+      font-weight: 500;
+      color: #000;
+    }
+
+    .section-header::after,
+    .topic-item::after {
+      content: "▼";
+      font-size: 12px;
+      color: #888;
+      opacity: 0.7;
+      transition: transform 0.3s ease, opacity 0.2s ease;
+    }
+
+    .section.open .section-header::after,
+    .topic.open .topic-item::after {
+      transform: rotate(180deg);
+      opacity: 1;
+    }
+
+    .section-links,
+    .sub-links {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 0 0 24px;
+    }
+
+    .section.open .section-links {
+      max-height: 100%;
+      padding: 0 0 18px 24px;
+    }
+
+    .topic.open .sub-links {
+      max-height: 300px;
+      padding: 8px 0 12px 24px;
+    }
+
+    .section-links > .topic,
+    .sub-links a {
+      display: block;
+      margin: 12px 0;
+      color: #2c7be5;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .section-links > .topic {
+      color: #000;
+      font-weight: normal;
+      padding-left: 8px;
+      border-left: 2px solid #ddd;
+    }
+
+    .sub-links a:hover {
+      color: #1a5bbf;
+      text-decoration: underline;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+a {text-decoration:none;
+    color: #000;
+}    
+  </style>
+</head>
+<body>
+
+  <h1>Все курсы Клуба 42</h1>
+
+  <div class="toc">
+    <!-- Раздел 1 -->
+    <div class="section">
+      <div class="section-header">I. Парадигма 3.0</div>
+      <div class="section-links">
+
+<div class="topic">
+          <div class="topic-item-2"><a href="https://t.me/c/3591337407/9">О курсе</a></div>
+          
+        </div>
+          
+        <div class="topic">
+          <div class="topic-item">1. Новая логика нового мира</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/10" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/13" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_1" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/29" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">2. Новый мир, новое поколение, новое мышление</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/43" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/44" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_2" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/47" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">3. Объектно-ориентированная онтология как новая парадигма реалистического мышления</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/48" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/49" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_3" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/52" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">4. Чуждая квантовая реальность</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/53" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/54" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_4" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/58" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">5. Мысленные эксперименты как инструмент повседневного мышления</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/61" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/62" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_5" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/69" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">6. Как перестать сходить с ума в мире постмодерна?</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/73" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/76" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test1_6" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/81" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Раздел 2 -->
+    <div class="section">
+      <div class="section-header">II. (Не)познанное сознание</div>
+      <div class="section-links">
+          
+          <div class="topic">
+             
+          <div class="topic-item-2" target="_blank"><a href="https://club-42.ru/lp/con/">О курсе</a></div>
+         
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">1. Панпсихистский математизм: сознание как математика</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/88" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/89" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_1" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/93" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">2. Барьеры человеческого разума и практичный AGI</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/94" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/95" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_2" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/98" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">3. Нейронная физика: теория, практика и следствия</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/99" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/104" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_3" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/107" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">4. Природа сознания в контексте «основного вопроса философии»</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/108" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/109" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_4" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/112" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">5. Философия сознания на современном этапе</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/113" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/114" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_5" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/117" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">6. Сознающая душа</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/118" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/119" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test2_6" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/122" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  
+  <!-- Раздел 3 -->
+    <div class="section">
+      <div class="section-header">III. Апгрейд разума</div>
+      <div class="section-links">
+          
+          <div class="topic">
+             
+          <div class="topic-item-2" target="_blank"><a href="https://club-42.ru/lp/eleatics/">О курсе</a></div>
+         
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">1. Парменид: бытие есть, а небытия нет</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/124" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/125" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test3_1" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/127" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">2. Апории Зенона о движении</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/130" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/133" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test3_2" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/136" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">3. Другие апории Зенона и сущность Мироздания</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/138" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/139" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test3_3" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/142" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">4. Мелисс - последний элеат: бесконечность бытия и современная наука</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/145" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/146" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test3_4" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/153" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">5. Жить как элеат</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/157" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/158" target="_blank">— Конспект</a>
+            <a href="https://t.me/courses42bot/test3_5" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/160" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">6. Философское обобщение и рефлексия над познанным</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/168" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/169" target="_blank">— Конспект</a>
+            <a href="https://t.me/c/3591337407/172" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/171" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+<!-- Раздел 4 -->
+    <div class="section">
+      <div class="section-header">IV. Буддийская перезагрузка</div>
+      <div class="section-links">
+          
+          <div class="topic">
+             
+          <div class="topic-item-2" target="_blank"><a href="https://club-42.ru/lp/br/">О курсе</a></div>
+         
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">1. Научно-философское осмысление медитации: в чем ее истинный глубинный смысл?</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/176" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/181" target="_blank">— Конспект</a>
+            <a href="https://t.me/c/3591337407/183" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/184" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">2. Когнитивные эффекты тишины и архитектура мышления в эпоху ИИ</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/188" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/190" target="_blank">— Конспект</a>
+            <a href="https://t.me/c/3591337407/191" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/195" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">3. Панель управления собой</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/196" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/200" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/br3test" target="_blank">— Тест</a>
+            <a href="https://t.me/c/3591337407/197" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">4. Секретное практическое занятие</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/199" target="_blank">— Рефлексия</a>
+       
+          </div>
+        </div>
+      </div>
+    </div>    
+    
+<!-- Раздел 5 -->
+    <div class="section">
+      <div class="section-header">V. Principia Mathematica</div>
+      <div class="section-links">
+          
+          <div class="topic">
+             
+          <div class="topic-item-2" target="_blank"><a href="https://t.me/c/3591337407/202">О курсе</a></div>
+         
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">1. ИИ как ожившая математика</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/212" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/210" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/test5_1" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/214" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">2. Диалектика математики</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/218" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/220" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/test5_2" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/225" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">3. Математика как естественная наука. Физический тезис Чёрча-Тьюринга</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/227" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/229" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/test5_3" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/232" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">4. Ученые против мифов или абиогенез и теория эволюции с точки зрения математики</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/233" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/237" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/test5_4" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/241" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        
+        <div class="topic">
+          <div class="topic-item">5. Феноменология математики</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/243" target="_blank">— Видеозапись</a>
+            <a href="https://t.me/c/3591337407/247" target="_blank">— Конспект</a>
+            <a href="https://t.me/zenoparadoxbot/test5_5" target="_blank">— Практика</a>
+            <a href="https://t.me/c/3591337407/251" target="_blank">— Дополнительные материалы</a>
+          </div>
+        </div>
+        <div class="topic">
+          <div class="topic-item">6. Секретное практическое занятие</div>
+          <div class="sub-links">
+            <a href="https://t.me/c/3591337407/245" target="_blank">— Рефлексия</a>
+       
+          </div>
+        </div>
+      </div>
+    </div>        
+  
+
+  <script>
+    // Открытие/закрытие разделов
+    document.querySelectorAll('.section-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = header.parentElement;
+        section.classList.toggle('open');
+      });
+    });
+
+    // Открытие/закрытие тем (вложенных списков)
+    document.querySelectorAll('.topic-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation(); // предотвращает одновременное открытие раздела
+        const topic = item.parentElement;
+        topic.classList.toggle('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
