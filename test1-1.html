@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тест: Новая логика нового мира</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #222;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option {
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option:hover {
+      background: #f0f4ff;
+      border-color: #a0b0ff;
+    }
+    .option.selected {
+      border-color: #4a6cf7;
+      background: #eef2ff;
+    }
+    .option.correct {
+      border-color: #4caf50;
+      background: #e8f5e9;
+    }
+    .option.incorrect {
+      border-color: #f44336;
+      background: #ffebee;
+    }
+    .feedback {
+      margin-top: 16px;
+      min-height: 24px;
+      font-weight: 500;
+    }
+    .btn {
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .btn:hover:not(:disabled) {
+      background: #3a5bf5;
+    }
+    .result {
+      text-align: center;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Тест: Новая логика нового мира</h1>
+    <div id="quiz"></div>
+  </div>
+
+  <script>
+    // Исходные вопросы
+    const originalQuestions = [
+      {
+        text: "Какой принцип лежит в основе спирального развития, описанного в лекции?",
+        correct: "Движение от тезиса к антитезису и далее к синтезу на новом уровне",
+        options: [
+          "Постоянное возвращение к исходной точке без изменений",
+          "Движение от тезиса к антитезису и далее к синтезу на новом уровне",
+          "Линейный прогресс от примитивного к сложному",
+          "Циклическое повторение одних и тех же событий"
+        ]
+      },
+      {
+        text: "Что автор называет «новой логикой нового мира»?",
+        correct: "Умение видеть целое и распознавать связи между, казалось бы, несвязанными явлениями",
+        options: [
+          "Строгое следование законам формальной логики",
+          "Умение видеть целое и распознавать связи между, казалось бы, несвязанными явлениями",
+          "Отказ от логики в пользу интуиции и чувств",
+          "Использование математических моделей для решения бытовых задач"
+        ]
+      },
+      {
+        text: "Какой философский подход автор считает наиболее адекватным для описания основы реальности в XXI веке?",
+        correct: "Нейтральный монизм",
+        options: [
+          "Материализм",
+          "Идеализм",
+          "Дуализм",
+          "Нейтральный монизм"
+        ]
+      },
+      {
+        text: "Что происходит на уровне химии, согласно модели «иерархической пирамиды бытия»?",
+        correct: "Стирается граница между живой и неживой материей",
+        options: [
+          "Живая и неживая материя полностью разделяются",
+          "Появляется новая форма сознания",
+          "Стирается граница между живой и неживой материей",
+          "Начинается доминирование биологических законов"
+        ]
+      },
+      {
+        text: "Почему, по мнению автора, классическое «критическое мышление» теряет свою эффективность в современном мире?",
+        correct: "Каждый считает, что мыслит критически, но при этом люди порой приходят к противоположным выводам",
+        options: [
+          "Люди перестали доверять фактам, экспертность как социальное явление окончательно обесценилась, наука полностью утратила свой авторитет",
+          "Все факты легко подделываются, но даже истинные факты легко поддаются любым вольным трактовкам и интерпретациям",
+          "Каждый считает, что мыслит критически, но при этом люди порой приходят к противоположным выводам",
+          "Научный метод полностью устарел в связи с открытыми в XX-XXI вв. парадоксами квантовой механики"
+        ]
+      },
+      {
+        text: "Что, согласно автору, лежит в основе квантовых полей и физических законов?",
+        correct: "Чистая математика",
+        options: [
+          "Энергия",
+          "Сознание",
+          "Чистая математика",
+          "Божественная воля"
+        ]
+      },
+      {
+        text: "Какой практический совет даёт автор для личностного развития?",
+        correct: "Временно прожить жизнь, противоположную своей привычной",
+        options: [
+          "Следовать моделям успешных людей, так как они проверены практикой",
+          "Избегать эмоций и стремиться к рациональности",
+          "Временно прожить жизнь, противоположную своей привычной",
+          "Углубляться в религиозные практики"
+        ]
+      },
+      {
+        text: "Что означает «укоренённость в вечности», согласно лекции?",
+        correct: "Осознание своей принадлежности к многослойной структуре реальности - от биологии до математики и еще глубже",
+        options: [
+          "Вера в загробную жизнь, потусторонний мир, многоплановость бытия и онтологичность магических сущностей",
+          "Осознание своей принадлежности к многослойной структуре реальности - от биологии до математики и еще глубже",
+          "Отказ от социальных связей, масок, концептов и прочих иллюзий",
+          "Постоянная медитация с целью обретения мистического высшего знания"
+        ]
+      },
+      {
+        text: "Какой исторический пример приводит автор, чтобы показать пользу столкновения противоположных точек зрения?",
+        correct: "Противоречивые лекции о Ленине на историческом факультете",
+        options: [
+          "Споры между физиками и биологами",
+          "Противоречивые лекции о Ленине на историческом факультете",
+          "Дискуссии в Государственной думе",
+          "Конфликты между религиозными конфессиями"
+        ]
+      },
+      {
+        text: "Что, по мнению автора, объединяет науку, философию и религию на глубинном уровне?",
+        correct: "Поиск единой онтологической основы, лежащей за пределами дихотомии «материя-идея»",
+        options: [
+          "Общая цель - управление обществом",
+          "Стремление к власти над природой с целью использования её ресурсов в интересах общества и его правящего класса",
+          "Поиск единой онтологической основы, лежащей за пределами дихотомии «материя-идея»",
+          "Использование одного и того же языка - математики"
+        ]
+      }
+    ];
+
+    // Функция перемешивания массива (Фишер-Йейтс)
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Подготовка вопросов с перемешанными вариантами
+    let questions = originalQuestions.map(q => {
+      const shuffledOptions = shuffle(q.options);
+      return {
+        text: q.text,
+        correct: q.correct,
+        options: shuffledOptions
+      };
+    });
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function renderQuestion() {
+      const quiz = document.getElementById('quiz');
+      const q = questions[currentQuestion];
+
+      let optionsHtml = '';
+      for (let i = 0; i < q.options.length; i++) {
+        optionsHtml += `<div class="option" data-answer="${encodeURIComponent(q.options[i])}">${q.options[i]}</div>`;
+      }
+
+      quiz.innerHTML = `
+        <div class="question-text">Вопрос ${currentQuestion + 1} из ${questions.length}<br><br>${q.text}</div>
+        <div class="options">${optionsHtml}</div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn" id="nextBtn" disabled>Далее</button>
+      `;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', handleOptionClick);
+      });
+
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
+
+    function handleOptionClick(e) {
+      const selectedOption = e.target;
+      const selectedText = decodeURIComponent(selectedOption.dataset.answer);
+      const correctText = questions[currentQuestion].correct;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      selectedOption.classList.add('selected');
+
+      if (selectedText === correctText) {
+        selectedOption.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Правильно!';
+        score++;
+      } else {
+        selectedOption.classList.add('incorrect');
+        document.querySelector(`.option[data-answer="${encodeURIComponent(correctText)}"]`).classList.add('correct');
+        document.getElementById('feedback').textContent = 'Неверно.';
+      }
+
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const quiz = document.getElementById('quiz');
+      quiz.innerHTML = `
+        <div class="result">
+          Тест завершён!<br><br>
+          Правильных ответов: <strong>${score} из ${questions.length}</strong><br><br>
+          <button class="btn" onclick="location.reload()">Пройти ещё раз</button>
+        </div>
+      `;
+    }
+
+    // Запуск
+    renderQuestion();
+  </script>
+</body>
+</html>
