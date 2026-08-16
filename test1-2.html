@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тест: Новый мир, новое поколение, новое мышление</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #222;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option {
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option:hover {
+      background: #f0f4ff;
+      border-color: #a0b0ff;
+    }
+    .option.selected {
+      border-color: #4a6cf7;
+      background: #eef2ff;
+    }
+    .option.correct {
+      border-color: #4caf50;
+      background: #e8f5e9;
+    }
+    .option.incorrect {
+      border-color: #f44336;
+      background: #ffebee;
+    }
+    .feedback {
+      margin-top: 16px;
+      min-height: 24px;
+      font-weight: 500;
+    }
+    .btn {
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .btn:hover:not(:disabled) {
+      background: #3a5bf5;
+    }
+    .result {
+      text-align: center;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Тест: Новый мир, новое поколение, новое мышление</h1>
+    <div id="quiz"></div>
+  </div>
+
+  <script>
+    // Исходные вопросы
+    const originalQuestions = [
+      {
+        text: "Как Андрей Макаров определяет предмет философии?",
+        correct: "Производство истинных (корректных и логичных) суждений",
+        options: [
+          "Изучение истории человеческой цивилизации",
+          "Поиск смысла жизни и духовного просветления",
+          "Производство истинных (корректных и логичных) суждений",
+          "Анализ религиозных и мифологических представлений"
+        ]
+      },
+      {
+        text: "Какое различие проводит спикер между «думать» и «мыслить»?",
+        correct: "Думать — оперировать шаблонами, мыслить — видеть «зазор» между мыслями и выбирать ответ",
+        options: [
+          "Думать — это эмоциональный акт, в то время как мыслить — рациональный",
+          "Думать — оперировать шаблонами, мыслить — видеть «зазор» между мыслями и выбирать ответ",
+          "Думать — это внутренний процесс, мыслить — это внешняя речь как выражение внутреннего процесса",
+          "Думать свойственно преимущественно детям, а мыслить — удел взрослых"
+        ]
+      },
+      {
+        text: "Что, по мнению Андрея Макарова, является результатом мышления (в отличие от думания)?",
+        correct: "Идеи",
+        options: [
+          "Эмоции",
+          "Автоматические реакции",
+          "Идеи",
+          "Факты"
+        ]
+      },
+      {
+        text: "Какой основной инструмент практической философии в педагогике и бизнесе предлагает спикер?",
+        correct: "Сократический диалог",
+        options: [
+          "Лекции и монологи",
+          "Психологическое тестирование",
+          "Сократический диалог",
+          "Медитативные практики"
+        ]
+      },
+      {
+        text: "Почему, по мнению А.И. Макарова, ChatGPT пока не может полноценно заменить человека в сократическом диалоге?",
+        correct: "У него отсутствует эмпатия и он обладает жёстким, предустановленным мировоззрением",
+        options: [
+          "Он не умеет задавать вопросы, что крайне важно в практике сократического диалога",
+          "У него отсутствует эмпатия и он обладает жёстким, предустановленным мировоззрением",
+          "Он не понимает философскую терминологию, а потому не может давать качественную обратную связь",
+          "Он работает только на английском языке, а достойных аналогов на русском языке не существует на данный момент"
+        ]
+      },
+      {
+        text: "Как спикер разграничивает философию и психологию?",
+        correct: "Философия работает только с высказываниями и логикой, психология — с эмоциями и психикой",
+        options: [
+          "Философия работает с чувствами, психология — с мыслями",
+          "Философия изучает поведение, психология — внутренние переживания",
+          "Философия работает только с высказываниями и логикой, психология — с эмоциями и психикой",
+          "Философия — для учёных, психология — для врачей"
+        ]
+      },
+      {
+        text: "Какие четыре параметра, по методике Макарова, позволяют оценить уровень мышления сотрудника?",
+        correct: "Ясность, логичность, аргументированность, гибкость мышления",
+        options: [
+          "Интеллект, эрудиция, скорость реакции, стрессоустойчивость",
+          "Ясность, логичность, аргументированность, гибкость мышления",
+          "Образование, опыт, коммуникабельность, лидерство",
+          "IQ, эмоциональный интеллект, креативность, дисциплина"
+        ]
+      },
+      {
+        text: "Почему, по мнению спикера, мышление требует поддерживающей среды?",
+        correct: "Потому что оно энергоёмко и деградирует без практики и диалога",
+        options: [
+          "Потому что оно энергоёмко и деградирует без практики и диалога",
+          "Потому что только в коллективе можно получить диплом",
+          "Потому что без интернета невозможно думать",
+          "Потому что мышление — это социальный навык, как танцы"
+        ]
+      },
+      {
+        text: "Как Андрей Макаров объясняет особенности поколения Z?",
+        correct: "Они выросли в сытом и безопасном обществе и ориентированы на комфорт и «вайбы»",
+        options: [
+          "Они ленивы и не хотят работать, что приведет к печальным последствиям не только их поколение, но и социум в целом",
+          "Они выросли в сытом и безопасном обществе и ориентированы на комфорт и «вайбы»",
+          "Они полностью подвержены влиянию соцсетей и с этим нужно бороться",
+          "Они отвергают все ценности предыдущих поколений"
+        ]
+      },
+      {
+        text: "Каких трех философов Андрей Макаров называет в числе самых важных для понимания мира?",
+        correct: "Платон, Маркс, Ницше",
+        options: [
+          "Кант, Гегель, Ницше",
+          "Платон, Маркс, Ницше",
+          "Аристотель, Декарт, Фуко",
+          "Сократ, Руссо, Фрейд"
+        ]
+      }
+    ];
+
+    // Функция перемешивания массива (Фишер-Йейтс)
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Подготовка вопросов с перемешанными вариантами
+    let questions = originalQuestions.map(q => {
+      const shuffledOptions = shuffle(q.options);
+      return {
+        text: q.text,
+        correct: q.correct,
+        options: shuffledOptions
+      };
+    });
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function renderQuestion() {
+      const quiz = document.getElementById('quiz');
+      const q = questions[currentQuestion];
+
+      let optionsHtml = '';
+      for (let i = 0; i < q.options.length; i++) {
+        optionsHtml += `<div class="option" data-answer="${encodeURIComponent(q.options[i])}">${q.options[i]}</div>`;
+      }
+
+      quiz.innerHTML = `
+        <div class="question-text">Вопрос ${currentQuestion + 1} из ${questions.length}<br><br>${q.text}</div>
+        <div class="options">${optionsHtml}</div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn" id="nextBtn" disabled>Далее</button>
+      `;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', handleOptionClick);
+      });
+
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
+
+    function handleOptionClick(e) {
+      const selectedOption = e.target;
+      const selectedText = decodeURIComponent(selectedOption.dataset.answer);
+      const correctText = questions[currentQuestion].correct;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      selectedOption.classList.add('selected');
+
+      if (selectedText === correctText) {
+        selectedOption.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Правильно!';
+        score++;
+      } else {
+        selectedOption.classList.add('incorrect');
+        document.querySelector(`.option[data-answer="${encodeURIComponent(correctText)}"]`).classList.add('correct');
+        document.getElementById('feedback').textContent = 'Неверно.';
+      }
+
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const quiz = document.getElementById('quiz');
+      quiz.innerHTML = `
+        <div class="result">
+          Тест завершён!<br><br>
+          Правильных ответов: <strong>${score} из ${questions.length}</strong><br><br>
+          <button class="btn" onclick="location.reload()">Пройти ещё раз</button>
+        </div>
+      `;
+    }
+
+    // Запуск
+    renderQuestion();
+  </script>
+</body>
+</html>
