@@ -1,395 +1,363 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест: Объектно-ориентированная онтология</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 800px;
-            margin: 0 auto;
-            background: #f5f5f5;
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        
-        .question {
-            background: white;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .question h3 {
-            color: #444;
-            margin-bottom: 15px;
-            font-size: 18px;
-        }
-        
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        
-        .option {
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .option:hover {
-            border-color: #4a90e2;
-            background: #f8f9fa;
-        }
-        
-        .option input[type="radio"] {
-            margin-right: 10px;
-        }
-        
-        .option.selected {
-            border-color: #4a90e2;
-            background: #e7f3ff;
-        }
-        
-        .option.correct {
-            border-color: #4caf50;
-            background: #e8f5e9;
-        }
-        
-        .option.incorrect {
-            border-color: #f44336;
-            background: #ffebee;
-        }
-        
-        button {
-            background: #4a90e2;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 20px auto;
-            display: block;
-            transition: background 0.2s;
-        }
-        
-        button:hover {
-            background: #357abd;
-        }
-        
-        #result {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            margin: 30px 0;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тест: Объектно-ориентированная онтология как новая парадигма реалистического мышления</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #222;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+    .progress {
+      text-align: center;
+      color: #666;
+      margin-bottom: 16px;
+      font-size: 0.95rem;
+    }
+    .question-text {
+      font-size: 1.15rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option {
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option:hover {
+      background: #f0f4ff;
+      border-color: #a0b0ff;
+    }
+    .option.selected {
+      border-color: #4a6cf7;
+      background: #eef2ff;
+    }
+    .option.correct {
+      border-color: #4caf50;
+      background: #e8f5e9;
+    }
+    .option.incorrect {
+      border-color: #f44336;
+      background: #ffebee;
+    }
+    .feedback {
+      margin-top: 16px;
+      min-height: 24px;
+      font-weight: 500;
+    }
+    .btn {
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .btn:hover:not(:disabled) {
+      background: #3a5bf5;
+    }
+    .result {
+      text-align: center;
+      font-size: 1.2rem;
+      line-height: 1.6;
+    }
+    .result-score {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #4a6cf7;
+      margin: 16px 0;
+    }
+    .result-message {
+      color: #555;
+      margin-bottom: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Тест: Объектно-ориентированная онтология</h1>
-    
-    <form id="quizForm">
-        <div class="question">
-            <h3>1. Что означает тезис «все объекты равны» в рамках объектно-ориентированной онтологии?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q1" value="0">
-                    <span>Все объекты состоят из одинаковых атомов</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q1" value="1">
-                    <span>Все объекты подчиняются одним и тем же законам физики</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q1" value="2">
-                    <span>Ни один объект (включая человека) не имеет привилегированного доступа к реальности</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q1" value="3">
-                    <span>Все объекты одинаково важны для человека</span>
-                </label>
-            </div>
-        </div>
 
-        <div class="question">
-            <h3>2. Какой способ познания, по мнению Хармана, даёт наиболее прямой (хотя и косвенный) доступ к реальному объекту?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q2" value="0">
-                    <span>Медитация</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="1">
-                    <span>Эстетический опыт (метафора, искусство)</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="2">
-                    <span>Логический вывод</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q2" value="3">
-                    <span>Научный эксперимент</span>
-                </label>
-            </div>
-        </div>
+  <div class="container">
+    <h1>Тест: Объектно-ориентированная онтология как новая парадигма реалистического мышления</h1>
+    <div id="quiz"></div>
+  </div>
 
-        <div class="question">
-            <h3>3. Какая из перечисленных систем НЕ является одной из «четырёх заблуждений о реальности», которые критикует Харман?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q3" value="0">
-                    <span>Панпсихизм</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="1">
-                    <span>Буквалистский реализм</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="2">
-                    <span>Антификционализм</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q3" value="3">
-                    <span>Физикализм</span>
-                </label>
-            </div>
-        </div>
+  <script>
+    // Исходные вопросы
+    const originalQuestions = [
+      {
+        text: "Что означает тезис «все объекты равны» в рамках объектно-ориентированной онтологии?",
+        correct: "Ни один объект (включая человека) не имеет привилегированного доступа к реальности",
+        options: [
+          "Все объекты состоят из одинаковых атомов",
+          "Все объекты подчиняются одним и тем же законам физики",
+          "Ни один объект (включая человека) не имеет привилегированного доступа к реальности",
+          "Все объекты одинаково важны для человека"
+        ]
+      },
+      {
+        text: "Какой способ познания, по мнению Хармана, даёт наиболее прямой (хотя и косвенный) доступ к реальному объекту?",
+        correct: "Эстетический опыт (метафора, искусство)",
+        options: [
+          "Медитация",
+          "Эстетический опыт (метафора, искусство)",
+          "Логический вывод",
+          "Научный эксперимент"
+        ]
+      },
+      {
+        text: "Какая из перечисленных систем НЕ является одной из «четырёх заблуждений о реальности», которые критикует Харман?",
+        correct: "Панпсихизм",
+        options: [
+          "Панпсихизм",
+          "Буквалистский реализм",
+          "Антификционализм",
+          "Физикализм"
+        ]
+      },
+      {
+        text: "Как в ООО объясняется взаимодействие между объектами, если реальные объекты изолированы друг от друга?",
+        correct: "Через замещающую (викарную) причинность посредством чувственных объектов",
+        options: [
+          "Через коллективное бессознательное",
+          "Через замещающую (викарную) причинность посредством чувственных объектов",
+          "Через прямой контакт их «реальных качеств»",
+          "Через божественное вмешательство"
+        ]
+      },
+      {
+        text: "Как ООО относится к вымышленным объектам, таким как Гарри Поттер?",
+        correct: "Они — полноценные реальные объекты в идеальном поле",
+        options: [
+          "Они — иллюзии коллективного сознания",
+          "Они нереальны, так как не материальны",
+          "Они — полноценные реальные объекты в идеальном поле",
+          "Они существуют только в рамках фантастической литературы"
+        ]
+      },
+      {
+        text: "Как ООО оценивает наивный научный рационализм и наивный мистицизм?",
+        correct: "Оба структурно совершают одну и ту же ошибку — претендуют на прямой доступ к реальному",
+        options: [
+          "Оба структурно совершают одну и ту же ошибку — претендуют на прямой доступ к реальному",
+          "Оба ошибочны, но по-разному",
+          "Оба верны, но в разных сферах",
+          "Наука права, мистика — иллюзия"
+        ]
+      },
+      {
+        text: "Что такое «четвероякий объект» в теории Хармана?",
+        correct: "Аналитическая модель, разделяющая объект на реальный/чувственный объект и реальные/чувственные качества",
+        options: [
+          "Аналитическая модель, разделяющая объект на реальный/чувственный объект и реальные/чувственные качества",
+          "Четыре закона причинности в нечеловеческом мире",
+          "Четыре типа объектов: физический, идеальный, воображаемый, социальный",
+          "Четыре этапа познания объекта"
+        ]
+      },
+      {
+        text: "Какое из следующих понятий НЕ возникает как «напряжение» между полюсами четвероякого объекта?",
+        correct: "Энергия",
+        options: [
+          "Истина",
+          "Сущность",
+          "Время",
+          "Энергия"
+        ]
+      },
+      {
+        text: "Согласно ООО, что делает объект «реальным»?",
+        correct: "Его автономность и нередуцируемый остаток",
+        options: [
+          "Его материальность",
+          "Его автономность и нередуцируемый остаток",
+          "Его полезность в повседневной жизни",
+          "Его наблюдаемость человеком"
+        ]
+      },
+      {
+        text: "Кто является основателем объектно-ориентированной онтологии?",
+        correct: "Грэм Харман",
+        options: [
+          "Грэм Харман",
+          "Тимоти Мортон",
+          "Бруно Латур",
+          "Леви Брайант"
+        ]
+      }
+    ];
 
-        <div class="question">
-            <h3>4. Как в ООО объясняется взаимодействие между объектами, если реальные объекты изолированы друг от друга?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q4" value="0">
-                    <span>Через коллективное бессознательное</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q4" value="1">
-                    <span>Через замещающую (викарную) причинность посредством чувственных объектов</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q4" value="2">
-                    <span>Через прямой контакт их «реальных качеств»</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q4" value="3">
-                    <span>Через божественное вмешательство</span>
-                </label>
-            </div>
-        </div>
+    // Функция перемешивания массива (алгоритм Фишера-Йетса)
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
 
-        <div class="question">
-            <h3>5. Как ООО относится к вымышленным объектам, таким как Гарри Поттер?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q5" value="0">
-                    <span>Они — иллюзии коллективного сознания</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q5" value="1">
-                    <span>Они нереальны, так как не материальны</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q5" value="2">
-                    <span>Они — полноценные реальные объекты в идеальном поле</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q5" value="3">
-                    <span>Они существуют только в рамках фантастической литературы</span>
-                </label>
-            </div>
-        </div>
+    // Подготовка: перемешиваем порядок вопросов
+    let questions = shuffle(originalQuestions).map(q => {
+      // Для каждого вопроса перемешиваем варианты ответов
+      const shuffledOptions = shuffle(q.options);
+      return {
+        text: q.text,
+        correct: q.correct, // правильный ответ определяется по тексту
+        options: shuffledOptions
+      };
+    });
 
-        <div class="question">
-            <h3>6. Как ООО оценивает наивный научный рационализм и наивный мистицизм?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q6" value="0">
-                    <span>Оба структурно совершают одну и ту же ошибку — претендуют на прямой доступ к реальному</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q6" value="1">
-                    <span>Оба ошибочны, но по-разному</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q6" value="2">
-                    <span>Оба верны, но в разных сферах</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q6" value="3">
-                    <span>Наука права, мистика — иллюзия</span>
-                </label>
-            </div>
-        </div>
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
 
-        <div class="question">
-            <h3>7. Что такое «четвероякий объект» в теории Хармана?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q7" value="0">
-                    <span>Аналитическая модель, разделяющая объект на реальный/чувственный объект и реальные/чувственные качества</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q7" value="1">
-                    <span>Четыре закона причинности в нечеловеческом мире</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q7" value="2">
-                    <span>Четыре типа объектов: физический, идеальный, воображаемый, социальный</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q7" value="3">
-                    <span>Четыре этапа познания объекта</span>
-                </label>
-            </div>
-        </div>
+    function renderQuestion() {
+      answered = false;
+      const quiz = document.getElementById('quiz');
+      const q = questions[currentQuestion];
 
-        <div class="question">
-            <h3>8. Какое из следующих понятий НЕ возникает как «напряжение» между полюсами четвероякого объекта?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q8" value="0">
-                    <span>Истина</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q8" value="1">
-                    <span>Сущность</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q8" value="2">
-                    <span>Время</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q8" value="3">
-                    <span>Энергия</span>
-                </label>
-            </div>
-        </div>
+      let optionsHtml = '';
+      for (let i = 0; i < q.options.length; i++) {
+        // Экранируем кавычки для корректной работы в data-атрибуте
+        const safeText = q.options[i].replace(/"/g, '&quot;');
+        optionsHtml += `<div class="option" data-answer="${safeText}">${q.options[i]}</div>`;
+      }
 
-        <div class="question">
-            <h3>9. Согласно ООО, что делает объект «реальным»?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q9" value="0">
-                    <span>Его материальность</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q9" value="1">
-                    <span>Его автономность и нередуцируемый остаток</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q9" value="2">
-                    <span>Его полезность в повседневной жизни</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q9" value="3">
-                    <span>Его наблюдаемость человеком</span>
-                </label>
-            </div>
-        </div>
+      quiz.innerHTML = `
+        <div class="progress">Вопрос ${currentQuestion + 1} из ${questions.length}</div>
+        <div class="question-text">${q.text}</div>
+        <div class="options">${optionsHtml}</div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn" id="nextBtn" disabled>Далее</button>
+      `;
 
-        <div class="question">
-            <h3>10. Кто является основателем объектно-ориентированной онтологии?</h3>
-            <div class="options">
-                <label class="option">
-                    <input type="radio" name="q10" value="0">
-                    <span>Грэм Харман</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q10" value="1">
-                    <span>Тимоти Мортон</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q10" value="2">
-                    <span>Бруно Латур</span>
-                </label>
-                <label class="option">
-                    <input type="radio" name="q10" value="3">
-                    <span>Леви Брайант</span>
-                </label>
-            </div>
-        </div>
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', handleOptionClick);
+      });
 
-        <button type="button" onclick="checkAnswers()">Проверить ответы</button>
-    </form>
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
 
-    <div id="result"></div>
+    function handleOptionClick(e) {
+      if (answered) return;
+      answered = true;
 
-    <script>
-        const correctAnswers = [2, 1, 0, 1, 2, 0, 0, 3, 1, 0];
+      const selectedOption = e.target;
+      const selectedText = selectedOption.dataset.answer;
+      const correctText = questions[currentQuestion].correct;
 
-        function checkAnswers() {
-            let score = 0;
-            const questions = document.querySelectorAll('.question');
-            
-            questions.forEach((question, index) => {
-                const selected = question.querySelector('input[type="radio"]:checked');
-                const options = question.querySelectorAll('.option');
-                
-                options.forEach(opt => {
-                    opt.classList.remove('correct', 'incorrect', 'selected');
-                });
-                
-                if (selected) {
-                    const selectedValue = parseInt(selected.value);
-                    const selectedOption = selected.parentElement;
-                    
-                    if (selectedValue === correctAnswers[index]) {
-                        selectedOption.classList.add('correct');
-                        score++;
-                    } else {
-                        selectedOption.classList.add('incorrect');
-                        options[correctAnswers[index]].classList.add('correct');
-                    }
-                } else {
-                    options[correctAnswers[index]].classList.add('correct');
-                }
-            });
-            
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = `Ваш результат: ${score} из 10 правильных ответов`;
-            
-            if (score === 10) {
-                resultDiv.style.color = '#4caf50';
-            } else if (score >= 7) {
-                resultDiv.style.color = '#2196f3';
-            } else {
-                resultDiv.style.color = '#f44336';
-            }
-        }
+      // Снимаем выделение со всех вариантов
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
 
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                const question = this.closest('.question');
-                question.querySelectorAll('.option').forEach(opt => {
-                    opt.classList.remove('selected');
-                });
-                this.parentElement.classList.add('selected');
-            });
+      selectedOption.classList.add('selected');
+
+      if (selectedText === correctText) {
+        selectedOption.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Правильно!';
+        score++;
+      } else {
+        selectedOption.classList.add('incorrect');
+        // Подсвечиваем правильный ответ
+        document.querySelectorAll('.option').forEach(opt => {
+          if (opt.dataset.answer === correctText) {
+            opt.classList.add('correct');
+          }
         });
-    </script>
+        document.getElementById('feedback').textContent = 'Неверно.';
+      }
+
+      document.getElementById('nextBtn').disabled = false;
+      // Меняем текст кнопки на последнем вопросе
+      if (currentQuestion === questions.length - 1) {
+        document.getElementById('nextBtn').textContent = 'Показать результат';
+      }
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const quiz = document.getElementById('quiz');
+      const percent = Math.round((score / questions.length) * 100);
+      let message = '';
+      if (percent === 100) message = 'Превосходно! Вы отлично усвоили материал.';
+      else if (percent >= 70) message = 'Хороший результат! Есть что повторить.';
+      else if (percent >= 40) message = 'Неплохо, но стоит вернуться к материалу.';
+      else message = 'Рекомендуем перечитать лекцию и пройти тест снова.';
+
+      quiz.innerHTML = `
+        <div class="result">
+          <h2>Тест завершён!</h2>
+          <div class="result-score">${score} из ${questions.length}</div>
+          <div class="result-message">${message}</div>
+          <div style="color:#888; font-size:0.95rem; margin-bottom:20px;">
+            Правильных ответов: ${percent}%
+          </div>
+          <button class="btn" onclick="restartQuiz()">Пройти ещё раз</button>
+        </div>
+      `;
+    }
+
+    function restartQuiz() {
+      // Перемешиваем вопросы заново
+      questions = shuffle(originalQuestions).map(q => ({
+        text: q.text,
+        correct: q.correct,
+        options: shuffle(q.options)
+      }));
+      currentQuestion = 0;
+      score = 0;
+      renderQuestion();
+    }
+
+    // Запуск теста
+    renderQuestion();
+  </script>
 </body>
 </html>
