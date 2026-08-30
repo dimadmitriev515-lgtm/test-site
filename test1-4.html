@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Тест: Чуждая квантовая реальность</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    body {
+      background: #f8f9fa;
+      color: #222;
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .container {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 1.5rem;
+      color: #2c3e50;
+    }
+    .question-text {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .option {
+      padding: 14px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+    .option:hover {
+      background: #f0f4ff;
+      border-color: #a0b0ff;
+    }
+    .option.selected {
+      border-color: #4a6cf7;
+      background: #eef2ff;
+    }
+    .option.correct {
+      border-color: #4caf50;
+      background: #e8f5e9;
+    }
+    .option.incorrect {
+      border-color: #f44336;
+      background: #ffebee;
+    }
+    .feedback {
+      margin-top: 16px;
+      min-height: 24px;
+      font-weight: 500;
+    }
+    .btn {
+      background: #4a6cf7;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      font-size: 1.1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: background 0.2s;
+    }
+    .btn:disabled {
+      background: #cccccc;
+      cursor: not-allowed;
+    }
+    .btn:hover:not(:disabled) {
+      background: #3a5bf5;
+    }
+    .result {
+      text-align: center;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Тест: Чуждая квантовая реальность</h1>
+    <div id="quiz"></div>
+  </div>
+
+  <script>
+    const originalQuestions = [
+      {
+        text: "Что означает слово «квант» в контексте квантовой механики?",
+        correct: "Минимальная порция физической величины",
+        options: [
+          "Непрерывный поток энергии",
+          "Минимальная порция физической величины",
+          "Частица, обладающая сознанием",
+          "Математическая ошибка в уравнениях классической физики"
+        ]
+      },
+      {
+        text: "Почему мы не можем наблюдать квантовые объекты напрямую, не вмешиваясь в их состояние?",
+        correct: "Потому что любое наблюдение требует взаимодействия, которое меняет состояние объекта",
+        options: [
+          "Потому что они слишком малы для человеческого глаза",
+          "Потому что любое наблюдение требует взаимодействия, которое меняет состояние объекта",
+          "Потому что квантовые объекты существуют только в воображении учёных",
+          "Потому что они находятся в другом измерении"
+        ]
+      },
+      {
+        text: "Что такое волновая функция в квантовой механике?",
+        correct: "Математическая абстракция, описывающая все возможные состояния системы и их амплитуды",
+        options: [
+          "Физическая волна, распространяющаяся в пространстве и времени подобно обычной морской волне",
+          "Математическая абстракция, описывающая все возможные состояния системы и их амплитуды",
+          "График вероятности нахождения частицы в определённой точке, не имеющий никакого реального физического выражения",
+          "Реальное поле, подобное электромагнитному, которое разлито по всему пространству как некий «бульон»"
+        ]
+      },
+      {
+        text: "Что происходит с волновой функцией при измерении?",
+        correct: "Она «коллапсирует» — из множества возможностей реализуется одна",
+        options: [
+          "Она эволюционирует по уравнению Шрёдингера",
+          "Она расширяется и включает новые состояния",
+          "Она «коллапсирует» — из множества возможностей реализуется одна",
+          "Она отвечает на измерение определённым образом, полностью поддаваясь взаимодействию"
+        ]
+      },
+      {
+        text: "В чём суть многомировой интерпретации квантовой механики?",
+        correct: "Все возможные исходы измерения реализуются в отдельных, не взаимодействующих ветвях реальности",
+        options: [
+          "Все возможные исходы измерения реализуются в отдельных, не взаимодействующих ветвях реальности",
+          "Миры существуют только в воображении наблюдателя, но это — необходимое для физики допущение",
+          "Параллельные вселенные создаются искусственно в лабораториях",
+          "Коллапс волновой функции происходит только в нашем мире, а в других — нет"
+        ]
+      },
+      {
+        text: "Кто предложил многомировую интерпретацию квантовой механики?",
+        correct: "Хью Эверетт",
+        options: [
+          "Нильс Бор",
+          "Вернер Гейзенберг",
+          "Хью Эверетт",
+          "Альберт Эйнштейн"
+        ]
+      },
+      {
+        text: "Почему, согласно современным исследованиям, «экзотические» ветви (с цепочками маловероятных событий) не образуют устойчивых миров?",
+        correct: "Потому что они не обособляются, а остаются запутанными с другими ветвями и не формируют классическую реальность",
+        options: [
+          "Потому что они нарушают законы термодинамики",
+          "Потому что они не обособляются, а остаются запутанными с другими ветвями и не формируют классическую реальность",
+          "Потому что в них невозможно существование белковой жизни, принципиально необходимой для образования устойчивой ветви реальности",
+          "Потому что они быстро уничтожаются гравитацией"
+        ]
+      },
+      {
+        text: "Какое правило определяет вероятность того или иного исхода при измерении?",
+        correct: "Правило Борна",
+        options: [
+          "Правило Гейзенберга",
+          "Правило Борна",
+          "Принцип неопределённости",
+          "Закон сохранения энергии"
+        ]
+      },
+      {
+        text: "Почему квантовая механика считается «чуждой» нашему повседневному опыту?",
+        correct: "Потому что в ней отсутствуют траектории, покой невозможен, а положение и скорость не могут быть точно определены одновременно",
+        options: [
+          "Потому что она описывает только микромир, не имеющий отношения к макромиру",
+          "Потому что в ней отсутствуют траектории, покой невозможен, а положение и скорость не могут быть точно определены одновременно",
+          "Потому что она основана на религиозных догмах, которые проникли в копенгагенскую интерпретацию через эзотерические взгляды её основателей",
+          "Потому что её формулы слишком сложны для понимания"
+        ]
+      },
+      {
+        text: "Что позволяет звёздам, включая Солнце, «гореть»?",
+        correct: "Квантовый туннельный эффект",
+        options: [
+          "Химические реакции окисления",
+          "Гравитационное сжатие",
+          "Квантовый туннельный эффект",
+          "Магнитная реконнекция"
+        ]
+      }
+    ];
+
+    // Алгоритм Фишера-Йетса для перемешивания
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    // Подготовка вопросов: перемешиваем порядок вопросов и варианты ответов
+    let questions = shuffle(originalQuestions).map(q => ({
+      text: q.text,
+      correct: q.correct,
+      options: shuffle(q.options)
+    }));
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function renderQuestion() {
+      const quiz = document.getElementById('quiz');
+      const q = questions[currentQuestion];
+
+      let optionsHtml = '';
+      for (let i = 0; i < q.options.length; i++) {
+        const safeText = q.options[i].replace(/"/g, '&quot;');
+        optionsHtml += `<div class="option" data-answer="${safeText}">${q.options[i]}</div>`;
+      }
+
+      quiz.innerHTML = `
+        <div class="question-text">Вопрос ${currentQuestion + 1} из ${questions.length}<br><br>${q.text}</div>
+        <div class="options">${optionsHtml}</div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn" id="nextBtn" disabled>Далее</button>
+      `;
+
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.addEventListener('click', handleOptionClick);
+      });
+
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
+
+    function handleOptionClick(e) {
+      const selectedOption = e.target;
+      const selectedText = decodeURIComponent(selectedOption.dataset.answer);
+      const correctText = questions[currentQuestion].correct;
+
+      // Снимаем выделение со всех
+      document.querySelectorAll('.option').forEach(opt => {
+        opt.classList.remove('selected');
+      });
+
+      selectedOption.classList.add('selected');
+
+      if (selectedText === correctText) {
+        selectedOption.classList.add('correct');
+        document.getElementById('feedback').textContent = 'Правильно!';
+        score++;
+      } else {
+        selectedOption.classList.add('incorrect');
+        document.querySelectorAll('.option').forEach(opt => {
+          if (opt.dataset.answer === encodeURIComponent(correctText)) {
+            opt.classList.add('correct');
+          }
+        });
+        document.getElementById('feedback').textContent = 'Неверно.';
+      }
+
+      document.getElementById('nextBtn').disabled = false;
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const quiz = document.getElementById('quiz');
+      const percent = Math.round((score / questions.length) * 100);
+      let message = '';
+      if (percent === 100) message = 'Превосходно! Вы отлично разбираетесь в квантовой механике.';
+      else if (percent >= 70) message = 'Хороший результат! Квантовая реальность вам знакома.';
+      else if (percent >= 40) message = 'Неплохо, но стоит углубиться в тему.';
+      else message = 'Рекомендуем перечитать материал и пройти тест снова.';
+
+      quiz.innerHTML = `
+        <div class="result">
+          <h2>Тест завершён!</h2>
+          <div style="font-size: 2rem; font-weight: bold; color: #4a6cf7; margin: 16px 0;">${score} из ${questions.length}</div>
+          <div style="color: #888; font-size: 0.95rem; margin-bottom: 20px;">Правильных ответов: ${percent}%</div>
+          <div style="margin-bottom: 20px;">${message}</div>
+          <button class="btn" onclick="location.reload()">Пройти ещё раз</button>
+        </div>
+      `;
+    }
+
+    // Запуск теста
+    renderQuestion();
+  </script>
+</body>
+</html>
