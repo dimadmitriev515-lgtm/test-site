@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d1017" />
+  <title>Спиральное развитие общества</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --bg: var(--tg-theme-bg-color, #0d1017);
+      --surface: var(--tg-theme-secondary-bg-color, #151a24);
+      --surface-2: color-mix(in srgb, var(--surface) 88%, white 12%);
+      --text: var(--tg-theme-text-color, #f3f5f7);
+      --muted: var(--tg-theme-hint-color, #9097a5);
+      --line: color-mix(in srgb, var(--muted) 22%, transparent);
+      --accent: var(--tg-theme-button-color, #5b8cff);
+      --accentText: var(--tg-theme-button-text-color, #ffffff);
+      --green: #66c69a;
+      --gold: #dfb866;
+      --blue: #74a7ff;
+      --radius: 22px;
+      --shadow: 0 12px 32px rgba(0,0,0,.14);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(900px 520px at 50% -180px, color-mix(in srgb, var(--accent) 20%, transparent), transparent 70%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: min(100%, 680px);
+      margin: 0 auto;
+      padding: max(28px, env(safe-area-inset-top)) 16px calc(34px + env(safe-area-inset-bottom));
+    }
+
+    header { padding: 14px 4px 22px; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 13px;
+    }
+    .eyebrow::before {
+      content: "";
+      width: 18px;
+      height: 2px;
+      border-radius: 10px;
+      background: var(--accent);
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 9vw, 54px);
+      line-height: .98;
+      letter-spacing: -.045em;
+      max-width: 570px;
+    }
+    .lead {
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.5;
+      max-width: 560px;
+    }
+
+    .seg-wrap {
+      position: sticky;
+      top: max(8px, env(safe-area-inset-top));
+      z-index: 20;
+      margin: 0 -2px 24px;
+      padding: 7px;
+      border: 1px solid var(--line);
+      border-radius: 17px;
+      background: color-mix(in srgb, var(--bg) 84%, transparent);
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      box-shadow: 0 8px 28px rgba(0,0,0,.10);
+    }
+    .segments { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .segments button {
+      appearance: none;
+      border: 0;
+      padding: 11px 5px;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--muted);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .22s ease;
+      white-space: nowrap;
+    }
+    .segments button.active {
+      color: var(--accentText);
+      background: var(--accent);
+      box-shadow: 0 5px 16px color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .stage {
+      scroll-margin-top: 88px;
+      position: relative;
+      padding: 20px 0 34px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+    .stage.visible { opacity: 1; transform: none; }
+
+    .stage-head {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .stage-number {
+      width: 52px;
+      height: 52px;
+      border-radius: 17px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #0b0e12;
+      background: var(--stage-color);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--stage-color) 22%, transparent);
+    }
+    .stage-kicker {
+      font-size: 12px;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+      color: var(--stage-color);
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .stage h2 {
+      font-size: 25px;
+      line-height: 1.05;
+      letter-spacing: -.025em;
+      margin: 0;
+    }
+
+    .cards {
+      display: grid;
+      gap: 10px;
+      margin-left: 25px;
+      padding-left: 40px;
+      border-left: 2px solid color-mix(in srgb, var(--stage-color) 35%, transparent);
+    }
+    .card {
+      position: relative;
+      background: linear-gradient(145deg, color-mix(in srgb, var(--surface) 96%, white 4%), var(--surface));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 17px 17px 16px;
+      box-shadow: var(--shadow);
+    }
+    .card::before {
+      content: "";
+      position: absolute;
+      left: -47px;
+      top: 22px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--stage-color);
+      box-shadow: 0 0 0 6px var(--bg);
+    }
+    .card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+    .icon {
+      flex: 0 0 31px;
+      width: 31px;
+      height: 31px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      font-size: 16px;
+      background: color-mix(in srgb, var(--stage-color) 13%, transparent);
+    }
+    .label {
+      font-size: 11px;
+      line-height: 1.15;
+      letter-spacing: .085em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .value {
+      font-size: 16px;
+      line-height: 1.42;
+      letter-spacing: -.008em;
+    }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      height: 38px;
+      color: var(--muted);
+      opacity: .7;
+      font-size: 22px;
+    }
+
+    footer {
+      margin: 8px 4px 0;
+      border-top: 1px solid var(--line);
+      padding: 20px 0 4px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+
+    .spiral-hero {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      background: linear-gradient(160deg, color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--bg) 96%, transparent));
+      border-radius: 26px;
+      padding: 12px 12px 14px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .spiral-hero svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .spiral-path { stroke-dasharray: 620; stroke-dashoffset: 620; animation: drawSpiral 1.8s .25s ease forwards; }
+    @keyframes drawSpiral { to { stroke-dashoffset: 0; } }
+    .spiral-node { stroke-width: 2.5; fill: var(--bg); }
+    .spiral-node.n1 { stroke: var(--green); }
+    .spiral-node.n2 { stroke: var(--gold); }
+    .spiral-node.n3 { stroke: var(--blue); }
+    .spiral-hero svg text { fill: var(--text); font: 800 13px -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    .spiral-caption { fill: var(--muted) !important; font-size: 10px !important; font-weight: 700 !important; letter-spacing: .04em; }
+    .spiral-note { fill: var(--blue) !important; font-size: 9px !important; font-weight: 800 !important; }
+    .spiral-thesis { display: grid; grid-template-columns: 38px 1fr; gap: 10px; align-items: center; margin: -3px 3px 2px; padding: 11px 12px; border-radius: 16px; background: color-mix(in srgb, var(--accent) 8%, transparent); color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .spiral-thesis > span { display:grid; place-items:center; width:38px; height:38px; border-radius:50%; color:var(--blue); font-size:24px; background:color-mix(in srgb,var(--blue) 12%,transparent); }
+    .spiral-thesis strong { color: var(--text); }
+
+    .transition { position: relative; min-height: 70px; display: grid; place-items: center; margin: -5px 0 0; color: var(--muted); }
+    .transition-line { position:absolute; top:0; bottom:0; left:50%; width:2px; transform:translateX(-50%); background: linear-gradient(180deg, transparent, var(--line), transparent); }
+    .transition-mark { position:relative; z-index:1; width:36px; height:36px; display:grid; place-items:center; border-radius:50%; background:var(--bg); border:1px solid var(--line); font-size:19px; }
+    .transition-text { position:absolute; top:50%; left:calc(50% + 28px); transform:translateY(-50%); width:130px; font-size:10px; line-height:1.25; letter-spacing:.035em; text-transform:uppercase; }
+    .transition.return .transition-mark { color: var(--blue); border-color: color-mix(in srgb,var(--blue) 40%,var(--line)); }
+
+    #post .card { border-color: color-mix(in srgb, var(--blue) 24%, var(--line)); }
+    .return-note { margin-top: 12px; padding-top: 11px; border-top: 1px dashed color-mix(in srgb, var(--blue) 35%, transparent); color: var(--muted); font-size: 12.5px; line-height: 1.42; }
+    .return-note b { color: var(--blue); font-weight: 800; }
+
+    .synthesis { display:grid; grid-template-columns:58px 1fr; gap:14px; margin: 12px 0 26px; padding:18px; border-radius:24px; border:1px solid color-mix(in srgb,var(--blue) 35%,var(--line)); background: linear-gradient(145deg, color-mix(in srgb,var(--blue) 9%,var(--surface)), var(--surface)); box-shadow:var(--shadow); }
+    .synthesis-symbol { width:58px; height:58px; display:grid; place-items:center; border-radius:18px; background:color-mix(in srgb,var(--blue) 13%,transparent); color:var(--blue); font-size:32px; }
+    .synthesis-kicker { color:var(--blue); font-size:11px; font-weight:850; letter-spacing:.1em; text-transform:uppercase; margin:2px 0 5px; }
+    .synthesis h3 { margin:0 0 8px; font-size:20px; line-height:1.12; letter-spacing:-.025em; }
+    .synthesis p { margin:0; color:var(--muted); font-size:13.5px; line-height:1.5; }
+
+    @media (max-width: 390px) {
+      .page { padding-left: 12px; padding-right: 12px; }
+      .segments button { font-size: 11px; }
+      .cards { margin-left: 22px; padding-left: 32px; }
+      .card::before { left: -39px; }
+      .value { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .stage { opacity: 1; transform: none; transition: none; }
+      .spiral-path { animation: none; stroke-dashoffset: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="eyebrow">Сравнительная схема</div>
+      <h1>Спиральное<br>развитие общества</h1>
+      <p class="lead">Не движение по прямой и не простое возвращение назад. Третий этап во многом возвращается к принципам первого — но уже на новом уровне развития.</p>
+
+      <div class="spiral-hero" aria-label="Схема спирального развития: архаическое, экономическое, постэкономическое общество">
+        <svg viewBox="0 0 340 220" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="spiralGradient" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#66c69a"/>
+              <stop offset="50%" stop-color="#dfb866"/>
+              <stop offset="100%" stop-color="#74a7ff"/>
+            </linearGradient>
+            <marker id="arrowHead" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#74a7ff"/>
+            </marker>
+          </defs>
+          <path class="spiral-path" d="M48 184 C276 184 294 140 176 124 C50 108 43 69 154 58 C238 50 283 47 304 22" fill="none" stroke="url(#spiralGradient)" stroke-width="4" stroke-linecap="round" marker-end="url(#arrowHead)"/>
+          <circle cx="48" cy="184" r="17" class="spiral-node n1"/><text x="48" y="190" text-anchor="middle">I</text>
+          <circle cx="176" cy="124" r="17" class="spiral-node n2"/><text x="176" y="130" text-anchor="middle">II</text>
+          <circle cx="154" cy="58" r="17" class="spiral-node n3"/><text x="154" y="64" text-anchor="middle">III</text>
+          <text x="73" y="207" class="spiral-caption">архаика</text>
+          <text x="199" y="144" class="spiral-caption">экономика</text>
+          <text x="177" y="79" class="spiral-caption">постэкономика</text>
+          <text x="326" y="17" text-anchor="end" class="spiral-note">тот же принцип → новый уровень</text>
+        </svg>
+        <div class="spiral-thesis"><span>↺</span><div><strong>Возврат без повторения</strong><br>Исходные принципы возвращаются после своего отрицания — в преобразованной форме.</div></div>
+      </div>
+    </header>
+
+    <nav class="seg-wrap" aria-label="Навигация по типам общества">
+      <div class="segments">
+        <button data-target="archaic" class="active">Архаическое</button>
+        <button data-target="economic">Экономическое</button>
+        <button data-target="post">Постэкономическое</button>
+      </div>
+    </nav>
+
+    <section class="stage" id="archaic" style="--stage-color: var(--green)">
+      <div class="stage-head">
+        <div class="stage-number">I</div>
+        <div>
+          <div class="stage-kicker">Первая стадия</div>
+          <h2>Архаическое общество</h2>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card"><div class="card-top"><span class="icon">🌿</span><span class="label">Происхождение материальных благ</span></div><div class="value">Производятся природой</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🌍</span><span class="label">Отношения с природой</span></div><div class="value">Подчинение природе</div></article>
+        <article class="card"><div class="card-top"><span class="icon">👥</span><span class="label">Социальные отношения</span></div><div class="value">Люди не делятся на антагонистические слои</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🎓</span><span class="label">Развитие образования</span></div><div class="value">Системного образования нет</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🏛️</span><span class="label">Политика</span></div><div class="value">Управляется демократически всеми членами общины</div></article>
+        <article class="card"><div class="card-top"><span class="icon">✦</span><span class="label">Духовная сфера</span></div><div class="value">Господствует религиозно-мифологическое мировоззрение</div></article>
+      </div>
+    </section>
+
+    <div class="transition"><span class="transition-line"></span><span class="transition-mark">↓</span><span class="transition-text">от исходного единства — к разделению</span></div>
+
+    <section class="stage" id="economic" style="--stage-color: var(--gold)">
+      <div class="stage-head">
+        <div class="stage-number">II</div>
+        <div>
+          <div class="stage-kicker">Вторая стадия</div>
+          <h2>Экономическое общество</h2>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card"><div class="card-top"><span class="icon">🛠️</span><span class="label">Происхождение материальных благ</span></div><div class="value">Производятся человеком</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🌍</span><span class="label">Отношения с природой</span></div><div class="value">Подчинение природы</div></article>
+        <article class="card"><div class="card-top"><span class="icon">⚖️</span><span class="label">Социальные отношения</span></div><div class="value">Люди делятся на сословия и классы</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🎓</span><span class="label">Развитие образования</span></div><div class="value">Образование постепенно становится всеобщим, системным и стандартизированным</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🏛️</span><span class="label">Политика</span></div><div class="value">Управляется публичной властью</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🔬</span><span class="label">Духовная сфера</span></div><div class="value">Религиозное мировоззрение отходит на задний план, уступая место науке</div></article>
+      </div>
+    </section>
+
+    <div class="transition return"><span class="transition-line"></span><span class="transition-mark">↻</span><span class="transition-text">от разделения — к синтезу</span></div>
+
+    <section class="stage" id="post" style="--stage-color: var(--blue)">
+      <div class="stage-head">
+        <div class="stage-number">III</div>
+        <div>
+          <div class="stage-kicker">Третья стадия</div>
+          <h2>Постэкономическое общество</h2>
+        </div>
+      </div>
+      <div class="cards">
+        <article class="card"><div class="card-top"><span class="icon">🤖</span><span class="label">Происхождение материальных благ</span></div><div class="value">Производятся автоматизированными системами</div><div class="return-note"><b>↺ Возврат:</b> человек снова не занят непосредственным производством благ — но теперь благодаря автоматизации, а не природной данности</div></article>
+        <article class="card"><div class="card-top"><span class="icon">♻️</span><span class="label">Отношения с природой</span></div><div class="value">Синтез, гармоническое взаимодействие</div><div class="return-note"><b>↺ Возврат:</b> снова единство с природой — но уже осознанное и технологически обеспеченное</div></article>
+        <article class="card"><div class="card-top"><span class="icon">👥</span><span class="label">Социальные отношения</span></div><div class="value">Люди не делятся на антагонистические слои при сохранении разнообразия в уровне и стиле жизни</div><div class="return-note"><b>↺ Возврат:</b> снова нет антагонистических слоёв — но без возврата к примитивной общине</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🧭</span><span class="label">Развитие образования</span></div><div class="value">Образование становится факультативным</div><div class="return-note"><b>↺ Возврат:</b> снова нет обязательной единой образовательной системы — но знания доступны в несравнимо большем объёме</div></article>
+        <article class="card"><div class="card-top"><span class="icon">🌐</span><span class="label">Политика</span></div><div class="value">Управляется демократически всеми членами общества на основе информационных технологий</div><div class="return-note"><b>↺ Возврат:</b> снова непосредственное участие всех — но в масштабе сложного общества</div></article>
+        <article class="card"><div class="card-top"><span class="icon">∞</span><span class="label">Духовная сфера</span></div><div class="value">Люди понимают науку и религию как два пути к одной цели</div><div class="return-note"><b>↺ Возврат:</b> снова целостное мировоззрение — но после развития рациональной науки</div></article>
+      </div>
+    </section>
+
+    <section class="synthesis">
+      <div class="synthesis-symbol">∞</div>
+      <div>
+        <div class="synthesis-kicker">Логика спирали</div>
+        <h3>III возвращается к I — через II</h3>
+        <p>Постэкономическое общество не отменяет пройденный путь. Оно возвращает ряд черт архаики — непосредственную демократию, неантагонистическую социальность, единство с природой, отсутствие принудительного производства — сохраняя достижения сложного технологического общества.</p>
+      </div>
+    </section>
+
+    <footer>Спиральное развитие · возвращение к исходным принципам на новом уровне</footer>
+  </main>
+
+  <script>
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+      try { tg.setHeaderColor('bg_color'); tg.setBackgroundColor('bg_color'); } catch (_) {}
+    }
+
+    const buttons = [...document.querySelectorAll('.segments button')];
+    const stages = [...document.querySelectorAll('.stage')];
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.target);
+        target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        tg?.HapticFeedback?.selectionChanged();
+      });
+    });
+
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.08 });
+    stages.forEach(s => revealObserver.observe(s));
+
+    const navObserver = new IntersectionObserver(entries => {
+      const visible = entries
+        .filter(e => e.isIntersecting)
+        .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible) return;
+      buttons.forEach(b => b.classList.toggle('active', b.dataset.target === visible.target.id));
+    }, { rootMargin: '-25% 0px -55% 0px', threshold: [0, .15, .3, .5] });
+    stages.forEach(s => navObserver.observe(s));
+  </script>
+</body>
+</html>
