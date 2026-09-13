@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ахиллес и Черепаха — Парадокс Зенона</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --black: #000000;
+      --white: #ffffff;
+      --red-500: #ef4444;
+      --red-400: #f87171;
+      --green-500: #10b981;
+      --indigo-600: #4f46e5;
+      --indigo-500: #6366f1;
+      --purple-600: #9333ea;
+      --blue-600: #2563eb;
+      --yellow-500: #eab308;
+      --yellow-400: #facc15;
+      --green-400: #4ade80;
+      --emerald-600: #0d9488;
+      --teal-600: #0d9488;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--gray-900);
+      color: #f3f4f6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 896px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    header {
+      background-color: var(--black);
+      border-bottom: 1px solid var(--gray-700);
+      padding: 1.5rem 0;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    header .container {
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.875rem;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.025em;
+    }
+
+    @media (min-width: 768px) {
+      header h1 {
+        font-size: 2.25rem;
+      }
+    }
+
+    header p {
+      margin-top: 0.25rem;
+      font-size: 1.125rem;
+      color: var(--gray-400);
+    }
+
+    main {
+      padding: 2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .card {
+      background-color: var(--gray-800);
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 0.75rem;
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .card p {
+      line-height: 1.625;
+      color: var(--gray-300);
+    }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+      outline: none;
+    }
+
+    .btn-continuous {
+      background: linear-gradient(to right, var(--indigo-600), var(--purple-600));
+      color: white;
+    }
+
+    .btn-discrete {
+      background-color: var(--gray-800);
+      color: var(--gray-400);
+    }
+
+    .btn-discrete:hover {
+      background-color: var(--gray-700);
+    }
+
+    .btn-control {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      font-weight: 500;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-control.step {
+      background-color: var(--indigo-600);
+    }
+    .btn-control.step:hover {
+      background-color: #4338ca;
+    }
+
+    .btn-control.reset {
+      background-color: var(--blue-600);
+    }
+    .btn-control.reset:hover {
+      background-color: #2254e8;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: flex-start;
+      margin-top: 1rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .info-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .info-item {
+      background-color: var(--gray-700);
+      padding: 0.5rem;
+      border-radius: 0.375rem;
+      text-align: center;
+      color: var(--gray-300);
+    }
+
+    .info-item .label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 0.25rem;
+    }
+
+    .info-item .value {
+      font-family: monospace;
+      font-size: 0.875rem;
+    }
+
+    .distance-bar-container {
+      width: 100%;
+      height: 2rem;
+      background-color: var(--gray-700);
+      border-radius: 0.375rem;
+      overflow: hidden;
+      margin-top: 1.5rem;
+    }
+
+    .distance-bar {
+      height: 100%;
+      background: linear-gradient(to right, var(--red-500), var(--yellow-500));
+    }
+
+    footer {
+      background-color: var(--black);
+      border-top: 1px solid var(--gray-800);
+      color: var(--gray-500);
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.875rem;
+    }
+
+    #track {
+      position: relative;
+      width: 100%;
+      height: 5rem;
+      border-top: 1px solid var(--gray-600);
+      margin: 1rem 0 1.5rem;
+    }
+
+    .tick {
+      position: absolute;
+      height: 16px;
+      border-left: 1px solid var(--gray-500);
+    }
+
+    .tick span {
+      position: absolute;
+      top: 18px;
+      font-size: 0.75rem;
+      color: var(--gray-400);
+    }
+
+    .trace {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background-color: var(--red-400);
+      border-radius: 50%;
+      opacity: 0.3;
+      bottom: 1rem;
+    }
+
+    .character {
+      position: absolute;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      border-radius: 50%;
+      z-index: 10;
+      bottom: 1rem;
+      transition: left 0.3s ease;
+    }
+
+    .achilles {
+      background-color: var(--red-500);
+      color: white;
+    }
+
+    .turtle {
+      background-color: var(--green-500);
+      color: white;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .text-green-400 { color: var(--green-400); }
+    .text-yellow-400 { color: var(--yellow-400); }
+    .text-gray-400 { color: var(--gray-400); }
+    .text-sm { font-size: 0.875rem; }
+    .font-medium { font-weight: 500; }
+    .mt-4 { margin-top: 1rem; }
+    .mb-2 { margin-bottom: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Ἀχιλλεύς καὶ Χελώνη</h1>
+      <p>Парадокс Зенона в двух измерениях</p>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="card">
+      <h2>Описание парадокса</h2>
+      <p id="description">
+        Ахиллес начинает позади черепахи и движется быстрее, но чтобы её догнать, он должен достичь точки, где она была ранее. Но к тому времени черепаха уже ушла чуть дальше.
+      </p>
+    </section>
+
+    <div class="btn-group">
+      <button id="continuousBtn" class="btn btn-continuous">
+        Непрерывное пространство
+      </button>
+      <button id="discreteBtn" class="btn btn-discrete">
+        Дискретное пространство
+      </button>
+    </div>
+
+    <section class="card">
+      <h3>Графическое представление</h3>
+      <div id="track"></div>
+
+      <div class="controls">
+        <button id="stepBtn" class="btn-control step">Сделать шаг</button>
+        <button id="resetBtn" class="btn-control reset">Сбросить</button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="label">Ахиллес</div>
+          <div class="value" id="achillesPos">0.000000 м</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Черепаха</div>
+          <div class="value" id="turtlePos">5.000000 м</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Расстояние</div>
+          <div class="value" id="distance">5.000000 м</div>
+        </div>
+        <div class="info-item">
+          <div class="label">Шаг</div>
+          <div class="value" id="stepCount">0</div>
+        </div>
+      </div>
+
+      <div id="continuousInfo">
+        <h4 class="text-sm font-medium text-gray-300 mb-2">Расстояние между персонажами</h4>
+        <div class="distance-bar-container">
+          <div id="distanceBar" class="distance-bar" style="width: 100%;"></div>
+        </div>
+        <div class="mt-4 text-xs text-yellow-400">
+          Ахиллес приближается, но никогда не достигает черепахи.
+        </div>
+        <div class="mt-1 text-xs text-gray-400">
+          Его шаги становятся всё меньше — стремятся к нулю, но не заканчиваются.
+        </div>
+      </div>
+
+      <div id="discreteInfo" class="hidden">
+        <p class="text-xs text-green-400">
+          Ахиллес делает 2 шага за ход. Он догоняет черепаху после 5 итераций.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Философский контекст</h2>
+      <p class="mb-2">
+        Парадокс был сформулирован Зеноном Элейским около 450 года до н.э.
+        Он использовал логику для доказательства иллюзорности движения и множества.
+      </p>
+      <p>
+        Хотя парадокс кажется абстрактным, он оказал огромное влияние на развитие математики, особенно теории пределов и бесконечных рядов.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2025 Парадокс Зенона · Образовательный проект
+  </footer>
+
+  <!-- ✅ ВАЖНО: ВАШ JAVASCRIPT — СКОПИРОВАН ПОЛНОСТЬЮ -->
+  <script>
+    // State
+    let mode = "continuous";
+    let achillesPos = 0;
+    let turtlePos = 5;
+    let traces = [];
+    let stepIndex = 0;
+    const baseScale = 10;
+
+    // DOM Elements
+    const track = document.getElementById("track");
+    const description = document.getElementById("description");
+    const stepBtn = document.getElementById("stepBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const continuousInfo = document.getElementById("continuousInfo");
+    const discreteInfo = document.getElementById("discreteInfo");
+    const continuousBtn = document.getElementById("continuousBtn");
+    const discreteBtn = document.getElementById("discreteBtn");
+
+    // Info elements
+    const achillesPosEl = document.getElementById("achillesPos");
+    const turtlePosEl = document.getElementById("turtlePos");
+    const distanceEl = document.getElementById("distance");
+    const stepCountEl = document.getElementById("stepCount");
+    const distanceBar = document.getElementById("distanceBar");
+
+    // Create ticks
+    function createTicks() {
+      track.innerHTML = '';
+      for (let i = 0; i <= baseScale; i++) {
+        const tick = document.createElement("div");
+        tick.className = "tick";
+        tick.style.left = `${(i / baseScale) * 100}%`;
+        tick.innerHTML = `<span>${i}</span>`;
+        track.appendChild(tick);
+      }
+      updateCharacters();
+    }
+
+    // Update DOM
+    function updateCharacters() {
+      // Remove old traces and characters
+      document.querySelectorAll('.trace, .achilles, .turtle').forEach(el => el.remove());
+
+      // Add traces
+      traces.forEach(pos => {
+        const trace = document.createElement("div");
+        trace.className = "trace";
+        trace.style.left = `${(pos / baseScale) * 100}%`;
+        track.appendChild(trace);
+      });
+
+      // Achilles
+      const achilles = document.createElement("div");
+      achilles.className = "character achilles";
+      achilles.style.left = `${(achillesPos / baseScale) * 100}%`;
+      achilles.title = "Ахиллес";
+      achilles.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 2L15 6H9L12 2ZM12 6L19 14V20H15V14H9V20H5V14L12 6Z"/></svg>`;
+      track.appendChild(achilles);
+
+      // Turtle
+      const turtle = document.createElement("div");
+      turtle.className = "character turtle";
+      turtle.style.left = `${(turtlePos / baseScale) * 100}%`;
+      turtle.title = "Черепаха";
+      turtle.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><circle cx="12" cy="12" r="6"/><rect x="6" y="10" width="12" height="4"/></svg>`;
+      track.appendChild(turtle);
+    }
+
+    function updateInfo() {
+      achillesPosEl.textContent = achillesPos.toFixed(6) + " м";
+      turtlePosEl.textContent = turtlePos.toFixed(6) + " м";
+      distanceEl.textContent = (turtlePos - achillesPos).toFixed(6) + " м";
+      stepCountEl.textContent = mode === "continuous" ? traces.length : stepIndex;
+      distanceBar.style.width = `${Math.max(0, 100 - (turtlePos - achillesPos) * 20)}%`;
+    }
+
+    // Continuous step
+    function handleContinuousStep() {
+      const newTurtlePos = turtlePos + 0.2;
+      const distance = newTurtlePos - achillesPos;
+      const step = distance / 2;
+      const newAchillesPos = achillesPos + step;
+
+      achillesPos = newAchillesPos;
+      turtlePos = newTurtlePos;
+      traces.push(newAchillesPos);
+      updateCharacters();
+      updateInfo();
+    }
+
+    // Discrete step
+    function handleDiscreteStep() {
+      if (stepIndex >= 5) return;
+      const steps = [2, 4, 6, 8, 10];
+      const nextAchilles = steps[stepIndex];
+      const nextTurtle = 5 + stepIndex + 1;
+
+      achillesPos = nextAchilles;
+      turtlePos = nextTurtle;
+      traces.push(nextAchilles);
+      stepIndex++;
+      updateCharacters();
+      updateInfo();
+
+      if (stepIndex >= 5) {
+        stepBtn.textContent = "Цель достигнута";
+        stepBtn.disabled = true;
+        stepBtn.classList.replace('btn-control', 'btn-control');
+        stepBtn.style.backgroundColor = '#4b5563';
+        stepBtn.style.cursor = 'not-allowed';
+      }
+    }
+
+    // Reset
+    function reset() {
+      achillesPos = 0;
+      turtlePos = 5;
+      traces = [];
+      stepIndex = 0;
+      stepBtn.disabled = false;
+      stepBtn.textContent = "Сделать шаг";
+      stepBtn.style.backgroundColor = '';
+      stepBtn.style.cursor = '';
+      updateCharacters();
+      updateInfo();
+    }
+
+    // Mode switch
+    function setMode(newMode) {
+      mode = newMode;
+      reset();
+
+      if (mode === "continuous") {
+        description.textContent = "Ахиллес начинает позади черепахи и движется быстрее, но чтобы её догнать, он должен достичь точки, где она была ранее. Но к тому времени черепаха уже ушла чуть дальше.";
+        continuousInfo.classList.remove("hidden");
+        discreteInfo.classList.add("hidden");
+
+        continuousBtn.classList.remove('btn-discrete');
+        continuousBtn.classList.add('btn-continuous');
+
+        discreteBtn.classList.remove('btn-continuous', 'bg-gradient-to-r', 'from-emerald-600', 'to-teal-600', 'text-white');
+        discreteBtn.classList.add('btn-discrete');
+      } else {
+        description.textContent = "Ахиллес делает дискретные шаги: за один шаг черепахи он делает два своих. Так он постепенно сокращает расстояние и в конечном итоге догоняет черепаху на отметке 10.";
+        continuousInfo.classList.add("hidden");
+        discreteInfo.classList.remove("hidden");
+
+        discreteBtn.classList.remove('btn-discrete');
+        discreteBtn.classList.add('btn-continuous');
+        discreteBtn.style.background = 'linear-gradient(to right, var(--emerald-600), var(--teal-600))';
+
+        continuousBtn.classList.remove('btn-continuous');
+        continuousBtn.classList.add('btn-discrete');
+      }
+    }
+
+    // Events
+    stepBtn.addEventListener("click", () => {
+      if (mode === "continuous") {
+        handleContinuousStep();
+      } else {
+        handleDiscreteStep();
+      }
+    });
+
+    resetBtn.addEventListener("click", reset);
+    continuousBtn.addEventListener("click", () => setMode("continuous"));
+    discreteBtn.addEventListener("click", () => setMode("discrete"));
+
+    // Init
+    createTicks();
+    setMode("continuous"); // default
+  </script>
+</body>
+</html>
